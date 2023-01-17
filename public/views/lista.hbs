@@ -18,7 +18,7 @@
     <h1>Vista de Productos</h1>
     <br>
 
-    {{#if productos}}
+    {{#if products}}
     <div class="table-responsive">
         <table class="table table-dark">
             <tr>
@@ -26,7 +26,7 @@
                 <th>Precio</th>
                 <th>Foto</th>
             </tr>
-            {{#each productos}}
+            {{#each products}}
             <tr>
                 <td>{{this.title}}</td>
                 <td>${{this.price}}</td>
