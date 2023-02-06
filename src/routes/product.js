@@ -2,8 +2,6 @@ const { Router } = require("express")
 const Product = require("../Class/Product")
 const dbController = require("../controllers/controllerMongoDB")
 
-
-
 const productsRouter = Router();
 
 const adm = true

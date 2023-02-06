@@ -3,68 +3,68 @@ const knex = require('knex')
 
 class Container {
 
-  constructor( config, dbTable ) {
-      this.config = config
-      this.dbTable = dbTable
-}
-  
+  constructor(config, dbTable) {
+    this.config = config
+    this.dbTable = dbTable
+  }
+
   async getAll() {
-    try{
+    try {
       const itemsInDb = await knex(this.config).from(this.dbTable).select('*')
       knex(this.config).destroy()
       return itemsInDb
-    } catch(err) {
+    } catch (err) {
       console.log(`Error: ${err}`)
     }
   }
- 
-  
-  async add( item ) {
-    try{
-      await knex(this.config)(this.dbTable).insert( item )
+
+
+  async add(item) {
+    try {
+      await knex(this.config)(this.dbTable).insert(item)
       knex(this.config).destroy()
       return
-    } catch(err) {
+    } catch (err) {
       console.log(`Error: ${err}`)
     }
   }
 
 
-  async modifyById( id, item ) {  
+  async modifyById(id, item) {
     try {
       const correctId = await knex(this.config)(this.dbTable).where('id', id).count()
-      if (correctId[0]['count(*)'] > 0){
-        await knex(this.config)(this.dbTable).where('id', id).update( item )
+      if (correctId[0]['count(*)'] > 0) {
+        await knex(this.config)(this.dbTable).where('id', id).update(item)
         knex(this.config).destroy()
         return true
       } else {
         knex(this.config).destroy()
         return false
       }
-    } catch(err) {
+    } catch (err) {
       console.log(`Error: ${err}`)
       return false
     }
   }
 
 
-  async getById( id ) {
+  async getById(id) {
     try {
       const product = await knex(this.config).select('title', 'price', 'thumbnail')
-      .from(this.dbTable).where('id', id).first()
+        .from(this.dbTable).where('id', id).first()
       console.log(product)
       return product ? product : null
 
-    } catch(err) {
+    } catch (err) {
       console.log(`Error: ${err}`)
     }
   }
 
 
-  async deleteById( id ) {  
+  async deleteById(id) {
     try {
       const correctId = await knex(this.config)(this.dbTable).where('id', id).count()
-      if (correctId[0]['count(*)'] > 0){
+      if (correctId[0]['count(*)'] > 0) {
         await knex(this.config)(this.dbTable).where('id', id).del()
         knex(this.config).destroy()
         return true
@@ -72,7 +72,7 @@ class Container {
         knex(this.config).destroy()
         return false
       }
-    } catch(err) {
+    } catch (err) {
       console.log(`Error: ${err}`)
       return false
     }
@@ -86,28 +86,10 @@ class Container {
 }
 
 
-//------- Declaracion de instancias
 
-const chat = new Container( 
-  {
-      client: 'sqlite3',
-      connection: { filename: './db/sqlite3db/ecommerce.sqlite' },
-      useNullAsDefault: true
-  },
-  'chat'
-)
+const chat = new Container()
 
-const products = new Container(
-  {
-      client: 'mysql',
-      connection: {
-        host: '127.0.0.1',
-        user: 'root',
-        database: 'ecommerce'}
-  },
-  'products'
-)
-
+const products = new Container()
 
 
 module.exports = { chat, products }
