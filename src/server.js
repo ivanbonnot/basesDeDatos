@@ -3,6 +3,9 @@ const express = require('express');
 const { Server: HTTPServer } = require('http')
 const { Server: IOServer } = require('socket.io')
 
+const productsRouter = require("./routes/product")
+const { connectToDb } = require("./config/connectToDb") 
+
 const app = express();
 
 const httpServer = new HTTPServer(app)
@@ -22,9 +25,20 @@ app.use(express.json())
 app.use(express.static('./public'))
 
 //Starting the server
-httpServer.listen(8080, ()=> {
-    console.log('Server On')
+// httpServer.listen(8080, ()=> {
+//     console.log('Server On')
+// })
+
+const PORT = 8080
+const server = httpServer.listen(PORT, () => {
+    connectToDb("mongo")
+    console.log(`Servidor http escuchando en el puerto ${server.address().port}`)
 })
+server.on('error', error => console.log(`Error en servidor ${error}`))
+
+
+//Routes
+app.use("/api/productos", productsRouter)
 
 //websocket
 io.on('connection', async socket => {
