@@ -39,6 +39,7 @@ server.on('error', error => console.log(`Error en servidor ${error}`))
 
 //Routes
 app.use("/api/productos", productsRouter)
+app.use("/api/productos-test", productsRouter)
 
 //websocket
 io.on('connection', async socket => {
