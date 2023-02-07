@@ -3,7 +3,6 @@ const productoModel = require("../models/productoModel")
 class ControllerMongoDb {
 
     saveProduct = async (productToAdd) => {
-        console.log("guardado", productToAdd)
         const product = new productoModel(productToAdd);
         await product.save();
         console.log("guardado", product)

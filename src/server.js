@@ -62,7 +62,7 @@ io.on('connection', async socket => {
     // actualizacion de mensajes
     socket.on('nuevoMensaje', async mensaje => {
         mensaje.date = new Date().toLocaleString()
-        await chatsController.save(mensaje)
+        await chatsController.saveChat(mensaje)
         io.sockets.emit('mensajes', await chatsController.getAll());
     })
 });

@@ -5,45 +5,45 @@ const socket = io.connect();
 //------------------------------------------------------------------------------------
 
 formAgregarProducto.addEventListener("submit", (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const producto = {
-    title: formAgregarProducto[0].value,
-    price: formAgregarProducto[1].value,
-    thumbnail: formAgregarProducto[2].value,
-    description: formAgregarProducto[3].value,
-    code: formAgregarProducto[4].value,
-    stock: formAgregarProducto[5].value,
-  };
+    const producto = {
+        title: formAgregarProducto[0].value,
+        price: formAgregarProducto[1].value,
+        thumbnail: formAgregarProducto[2].value,
+        description: formAgregarProducto[3].value,
+        code: formAgregarProducto[4].value,
+        stock: formAgregarProducto[5].value,
+    };
 
-  const productJSON = JSON.stringify(producto);
+    const productJSON = JSON.stringify(producto);
 
-  fetch("http://localhost:8080/api/productos/", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: productJSON,
-  });
+    fetch("http://localhost:8080/api/productos/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: productJSON,
+    });
 
-  socket.emit("update", producto);
-  formAgregarProducto.reset();
+    socket.emit("update", producto);
+    formAgregarProducto.reset();
 });
 
 socket.on("productos", (productos) => {
-  makeHtmlTable(productos).then((html) => {
-    document.getElementById("productos").innerHTML = html;
-  });
+    makeHtmlTable(productos).then((html) => {
+        document.getElementById("productos").innerHTML = html;
+    });
 });
 
 function makeHtmlTable(productos) {
-  return fetch("./views/lista.hbs")
-    .then((respuesta) => respuesta.text())
-    .then((plantilla) => {
-      const template = Handlebars.compile(plantilla);
-      const html = template({ productos });
-      return html;
-    });
+    return fetch("./views/lista.hbs")
+        .then((respuesta) => respuesta.text())
+        .then((plantilla) => {
+            const template = Handlebars.compile(plantilla);
+            const html = template({ productos });
+            return html;
+        });
 }
 
 //-------------------------------------------------------------------------------------
@@ -59,40 +59,45 @@ const inputMensaje = document.getElementById("inputMensaje");
 const btnEnviar = document.getElementById("btnEnviar");
 
 formPublicarMensaje.addEventListener("submit", (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const mensaje = {
-    author: {
-      id: inputEmail.value,
-      name: inputName.value,
-      surname: inputLastname.value,
-      age: inputAge.value,
-      nickname: inputAlias.value,
-      avatar: inputAvatar.value,
-    },
-    text: inputMensaje.value,
-  };
+    const mensaje = {
+        author: {
+            email: inputEmail.value,
+            name: inputName.value,
+            surname: inputLastName.value,
+            age: inputAge.value,
+            nickname: inputAlias.value,
+            avatar: inputAvatar.value,
+        },
+        text: inputMensaje.value,
+    };
 
-  socket.emit("nuevoMensaje", mensaje);
-//   formPublicarMensaje.reset();
-  inputMensaje.focus();
+    console.log(mensaje)
+    socket.emit("nuevoMensaje", mensaje);
+    //   formPublicarMensaje.reset();
+    inputMensaje.focus();
 });
 
 socket.on("mensajes", (mensajes) => {
-  const html = makeHtmlList(mensajes);
-  document.getElementById("mensajes").innerHTML = html;
+    if (mensajes =! '') {
+        console.log(mensajes)
+         const html =  makeHtmlList(mensajes);
+        document.getElementById("mensajes").innerHTML = html;
+        return
+    }
 });
 
 function makeHtmlList(mensajes) {
-  return mensajes
-    .map((mensaje) => {
-      return `
+    return mensajes
+        .forEach((mensaje) => {
+            return `
             <div>
-                <b style="color:blue;">${mensaje.user}</b>
+                <b style="color:blue;">${mensaje.author}</b>
                 [<span style="color:brown;">${mensaje.date}</span>] :
-                <i style="color:green;">${mensaje.mensaje}</i>
+                <i style="color:green;">${mensaje.text}</i>
             </div>
         `;
-    })
-    .join(" ");
+        })
+        .join(" ");
 }

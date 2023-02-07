@@ -1,25 +1,21 @@
 const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
 
-const userSchema = new Schema({
-  email: { type: String, required: true },
-  name: { type: String, required: true },
-  surname: { type: String, required: true },
-  age: { type: Number, required: true },
-  nickname: { type: String, required: true },
-  avatar: { type: String, required: true },
-});
-
-const messageSchema = new Schema({
-    timestamp: { type: Date, default: Date.now },
-    text: { type: String, required: true }
-  })
-
 const chatSchema = new Schema({
-  chatid: { type: String, required: true },
-  messages: [{ userSchema, messageSchema }],
+  author: {
+    email: { type: String, require: true },
+    name: { type: String, require: true },
+    lastname: { type: String, require: true },
+    age: { type: Number, require: true },
+    nickname: { type: String, require: true },
+    avatar: { type: String, require: true },
+  },
+  text: { type: String, require: true },
+  date: { type: Date, require: true },
 });
+
 
 const chatModel = model("Chat", chatSchema);
 
 module.exports = chatModel;
+
