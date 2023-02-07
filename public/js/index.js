@@ -35,14 +35,20 @@ function makeHtmlTable(productos) {
 
 //-------------------------------------------------------------------------------------
 
-const inputUsername = document.getElementById('inputUsername')
+const inputEmail = document.getElementById('inputEmail')
+const inputName = document.getElementById('inputName')
+const inputLastName = document.getElementById('inputLastName')
+const inputAge = document.getElementById('inputAge')
+const inputAlias = document.getElementById('inputAlias')
+const inputAvatar = document.getElementById('inputAvatar')
+
 const inputMensaje = document.getElementById('inputMensaje')
 const btnEnviar = document.getElementById('btnEnviar')
 
 formPublicarMensaje.addEventListener('submit', e => {
     e.preventDefault()
 
-    const mensaje = { user: inputUsername.value, mensaje: inputMensaje.value }
+    const mensaje = { user: inputEmail.value, mensaje: inputMensaje.value }
     socket.emit('nuevoMensaje', mensaje);
     formPublicarMensaje.reset()
     inputMensaje.focus()
@@ -65,8 +71,8 @@ function makeHtmlList(mensajes) {
     }).join(" ");
 }
 
-inputUsername.addEventListener('input', () => {
-    const hayEmail = inputUsername.value.length
+inputEmail.addEventListener('input', () => {
+    const hayEmail = inputEmail.value.length
     const hayTexto = inputMensaje.value.length
     inputMensaje.disabled = !hayEmail
     btnEnviar.disabled = !hayEmail || !hayTexto

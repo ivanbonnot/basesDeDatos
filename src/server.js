@@ -4,6 +4,7 @@ const { Server: HTTPServer } = require('http')
 const { Server: IOServer } = require('socket.io')
 
 const productsRouter = require("./routes/product")
+const productsRouterTest = require("./routes/products-test")
 const { connectToDb } = require("./config/connectToDb") 
 
 const app = express();
@@ -39,7 +40,7 @@ server.on('error', error => console.log(`Error en servidor ${error}`))
 
 //Routes
 app.use("/api/productos", productsRouter)
-app.use("/api/productos-test", productsRouter)
+app.use("/api/productos-test", productsRouterTest)
 
 //websocket
 io.on('connection', async socket => {

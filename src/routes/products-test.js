@@ -1,13 +1,13 @@
 const { Router } = require("express")
 const mock = require('../controllers/fakermock')
-const productsRouter = Router();
+const productsRouterTest = Router();
 
-productsRouter.get('/', async (req, res) => {
+productsRouterTest.get('/', async (req, res) => {
     const productos = await mock.getAll();
 
     res.json(productos);
 })
 
 
-export default productsRouter;
+export default productsRouterTest;
 
