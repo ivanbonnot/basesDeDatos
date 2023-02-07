@@ -1,4 +1,4 @@
-const faker = require('faker') 
+const { faker } = require('@faker-js/faker')
 faker.locale = 'es'
 
 
@@ -34,4 +34,4 @@ class MockContainer {
   
 const mock = new MockContainer( 5 )
 
-module.exports = { mock }
+module.exports =  mock 

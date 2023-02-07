@@ -9,5 +9,5 @@ productsRouterTest.get('/', async (req, res) => {
 })
 
 
-export default productsRouterTest;
+module.exports = productsRouterTest;
 

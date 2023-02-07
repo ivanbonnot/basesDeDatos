@@ -5,7 +5,7 @@ const { Server: IOServer } = require('socket.io')
 
 const productsRouter = require("./routes/product")
 const productsRouterTest = require("./routes/products-test")
-const { connectToDb } = require("./config/connectToDb") 
+const  connectToDb  = require("./config/connectToDb") 
 
 const app = express();
 

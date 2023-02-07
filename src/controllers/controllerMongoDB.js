@@ -81,4 +81,4 @@ class ControllerMongoDb {
 
 
 const dbController = new ControllerMongoDb()
-export default dbController;
+module.exports = dbController;

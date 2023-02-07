@@ -5,16 +5,32 @@ const socket = io.connect();
 //------------------------------------------------------------------------------------
 
 formAgregarProducto.addEventListener('submit', e => {
+
     e.preventDefault()
+
     const producto = {
         title: formAgregarProducto[0].value,
         price: formAgregarProducto[1].value,
-        thumbnail: formAgregarProducto[2].value
+        thumbnail: formAgregarProducto[2].value,
+        description: formAgregarProducto[3].value,
+        code: formAgregarProducto[4].value,
+        stock: formAgregarProducto[5].value
     }
+
+    const productJSON = JSON.stringify(producto)
+
+    fetch('http://localhost:8080/api/productos/',
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: productJSON,
+        });
+
     socket.emit('update', producto);
     formAgregarProducto.reset()
 })
-
 
 
 socket.on('productos', productos => {
@@ -70,15 +86,3 @@ function makeHtmlList(mensajes) {
         `)
     }).join(" ");
 }
-
-inputEmail.addEventListener('input', () => {
-    const hayEmail = inputEmail.value.length
-    const hayTexto = inputMensaje.value.length
-    inputMensaje.disabled = !hayEmail
-    btnEnviar.disabled = !hayEmail || !hayTexto
-})
-
-inputMensaje.addEventListener('input', () => {
-    const hayTexto = inputMensaje.value.length
-    btnEnviar.disabled = !hayTexto
-})
