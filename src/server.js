@@ -3,16 +3,15 @@ const express = require('express');
 const { Server: HTTPServer } = require('http')
 const { Server: IOServer } = require('socket.io')
 
-const productsRouter = require("./routes/product")
-const productsRouterTest = require("./routes/products-test")
-const  connectToDb  = require("./config/connectToDb") 
+const handlebars = require('express-handlebars')
+const path = require('path')
 
 const app = express();
 
 const httpServer = new HTTPServer(app)
 const io = new IOServer(httpServer)
 
-const { products, chat } = require('./contenedor')
+const { productos, carrito } = require('./class/contenedor')
 
 
 //Settings
@@ -26,46 +25,44 @@ app.use(express.json())
 app.use(express.static('./public'))
 
 //Starting the server
-// httpServer.listen(8080, ()=> {
-//     console.log('Server On')
-// })
-
-const PORT = 8080
-const server = httpServer.listen(PORT, () => {
-    connectToDb("mongo")
-    console.log(`Servidor http escuchando en el puerto ${server.address().port}`)
+httpServer.listen(8080, () => {
+    console.log('Server On')
 })
-server.on('error', error => console.log(`Error en servidor ${error}`))
-
-
-//Routes
-app.use("/api/productos", productsRouter)
-app.use("/api/productos-test", productsRouterTest)
 
 //websocket
 io.on('connection', async socket => {
     console.log('Nuevo cliente conectado!');
 
     // carga inicial de productos
-    socket.emit('productos', await products.getAll());
+    socket.emit('productos', await productos.getAll());
+    socket.emit('carritos', await carrito.getAll());
 
     // actualizacion de productos
     socket.on('update', async producto => {
         products.save(producto)
-        io.sockets.emit('productos', await products.getAll());
+        io.sockets.emit('productos', await productos.getAll());
     })
 
-    // carga inicial de mensajes
-    socket.emit('mensajes', await chat.getAll());
-
-    // actualizacion de mensajes
-    socket.on('nuevoMensaje', async mensaje => {
-        mensaje.date = new Date().toLocaleString()
-        await chat.save(mensaje)
-        io.sockets.emit('mensajes', await chat.getAll());
-    })
+    socket.on('newCart', async () => {
+        socket.emit('carritos', await carts.getAll())
+      })
 });
 
+
+  
+//HBS
+app.engine(
+    "hbs",
+    handlebars.engine({
+        extname: ".hbs"
+    })
+);
+app.set("view engine", "hbs");
+app.set('views', path.resolve(__dirname, '../public'))
+
+//Routes
+app.use('/api/productos', require('./routes/products'))
+app.use('/api/carrito', require('./routes/cart'))
 
 
 
