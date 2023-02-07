@@ -1,13 +1,13 @@
 const { Router } = require("express")
 const Product = require("../Class/Product")
-const dbController = require("../controllers/controllerMongoDB")
+const productController = require("../controllers/controllerMongoDB")
 
 const productsRouter = Router();
 
 const adm = true
 
 productsRouter.get('/', async (req, res) => {
-    const productos = await dbController.getProducts();
+    const productos = await productController.getProducts();
 
     res.json(productos);
 })
@@ -15,7 +15,7 @@ productsRouter.get('/', async (req, res) => {
 
 productsRouter.get('/:id', async (req, res) => {
     const { id } = req.params
-    const productById = await dbController.getProductById(id)
+    const productById = await productController.getProductById(id)
     console.log(id)
     if (productById) {
         res.json(productById)
@@ -45,7 +45,7 @@ productsRouter.post('/', async (req, res) => {
         console.log(req.body)
         // const product = new productoModel(product);
         // await product.save();
-        dbController.saveProduct(product)
+        productController.saveProduct(product)
         res.json('Guardado')
         // } else {
         //     res.send('Invalido, todos los campos son obligatorios')
@@ -71,10 +71,10 @@ productsRouter.put('/:id', async (req, res) => {
             stock
         );
 
-        const productById = await dbController.getProductById(id)
+        const productById = await productController.getProductById(id)
 
         if (productById) {
-            await dbController.updateProduct(id, productUpdate)
+            await productController.updateProduct(id, productUpdate)
             res.send(productUpdate)
         } else {
             res.status(404).send({ error: 'id invalid / missing fields' })
@@ -88,7 +88,7 @@ productsRouter.put('/:id', async (req, res) => {
 productsRouter.delete('/:id', async (req, res) => {
     if (adm) {
         const { id } = req.params
-        const deleteProdById = await dbController.deleteProduct(id)
+        const deleteProdById = await productController.deleteProduct(id)
 
         if (deleteProdById) {
             res.send({ deleted: deleteProdById })

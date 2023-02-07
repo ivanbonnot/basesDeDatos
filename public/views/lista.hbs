@@ -18,21 +18,19 @@
     <h1>Vista de Productos</h1>
     <br>
 
-    {{#if productos}}
+    {{#if products}}
     <div class="table-responsive">
         <table class="table table-dark">
             <tr>
                 <th>Nombre</th>
                 <th>Precio</th>
                 <th>Foto</th>
-                <th>Stock</th>
             </tr>
-            {{#each productos}}
+            {{#each products}}
             <tr>
                 <td>{{this.title}}</td>
                 <td>${{this.price}}</td>
-                <td><img width="50" src={{this.foto}} alt="not found"></td>
-                <td>${{this.stock}}</td>
+                <td><img width="50" src={{this.thumbnail}} alt="not found"></td>
             </tr>
             {{/each}}
         </table>

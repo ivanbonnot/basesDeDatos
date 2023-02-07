@@ -13,6 +13,9 @@
     <link rel="icon" type="image/png" sizes="32x32"
         href="//res.cloudinary.com/hdsqazxtw/image/upload/v1558445734/favicon-32x32_fy92aq.png">
     <script src="/socket.io/socket.io.js"></script>
+    <script src="
+https://cdn.jsdelivr.net/npm/normalizr@3.6.2/dist/normalizr.browser.min.js
+"></script>
     <title>webSocket</title>
 </head>
 
@@ -23,10 +26,7 @@
             <div class="border">
                 <p>Nombre: <input type="text" name="title"></p>
                 <p>Precio: <input type="text" name="price"></p>
-                <p>Url image: <input type="text" name="foto"></p>
-                <p>Descripción: <input type="text" name="descripcion"></p>
-                <p>Código: <input type="text" name="codigo"></p>
-                <p>Stock: <input type="text" name="stock"></p>
+                <p>Url image: <input type="text" name="thumbnail"></p>
             </div>
             <div class="border">
                 <p>Descripción: <input type="text" name="description"></p>
@@ -35,15 +35,30 @@
         </form>
 
         <div id="productos"></div>
+
+        <div class="chat">
+            <h1>Chat</h1>
+
+            <input type="text" id="inputUsername" class="form-control w-75 my-2 mr-2" placeholder="Ingresá tu email">
+            <input type="text" id="inputName" class="form-control w-75 my-2 mr-2" placeholder="Ingresá tu nombre">
+            <input type="text" id="inputLastName" class="form-control w-75 my-2 mr-2" placeholder="Ingresá tu apellidu">
+            <input type="text" id="inputAge" class="form-control w-75 my-2 mr-2" placeholder="Ingresá tu edad">
+            <input type="text" id="inputAlias" class="form-control w-75 my-2 mr-2" placeholder="Ingresá tu alias">
+            <input type="text" id="inputAvatar" class="form-control w-75 my-2 mr-2" placeholder="Ingresá tu avatar">
+
+            <div id="mensajes"></div>
+
+            <form id="formPublicarMensaje" class="form-inline" autocomplete="off">
+                <div class="form-group">
+                    <input disabled id="inputMensaje" type="text" class="form-control my-2 mr-2"
+                        placeholder="Ingresá tu mensaje">
+                    <button disabled id="btnEnviar" type="submit" class="btn btn-primary my-2">Enviar</button>
+                </div>
+            </form>
+        </div>
     </div>
 
-    <div>
-        <form action="/api/carrito" method="GET">
-            <button id="carrito" class="btn">Carrito</button>
-        </form>
-    </div>
-
-    <script  src="./js/index.js"></script>
+    <script src="./js/index.js"></script>
 </body>
 
 </html>
