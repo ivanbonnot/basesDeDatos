@@ -16,7 +16,8 @@ class ControllerMongoDB {
     mensajes.forEach((mensaje) => {
       array.mensajes.push(mensaje)
     })
-    return array;
+
+    return normalizedData(array);
   }
 
 
