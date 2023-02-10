@@ -1,5 +1,5 @@
 const chatModel = require('../models/chatModel')
-const normalizedData = require('../normalizer/normalizr')
+const {normalizedData, denormalizeData} = require('../normalizer/normalizr')
 
 class ControllerMongoDB {
 
@@ -14,10 +14,11 @@ class ControllerMongoDB {
 
     const mensajes = await chatModel.find({})
     mensajes.forEach((mensaje) => {
-      array.mensajes.push(mensaje)
+      array.mensajes.push(mensaje._doc)
     })
-
-    return normalizedData(array);
+    
+    return array
+    return denormalizeData(normalizedData(array))
   }
 
 
